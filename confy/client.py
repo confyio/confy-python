@@ -4,7 +4,9 @@ from .http_client import HttpClient
 from .api.user import User
 from .api.orgs import Orgs
 from .api.teams import Teams
+from .api.members import Members
 from .api.projects import Projects
+from .api.access import Access
 from .api.envs import Envs
 from .api.config import Config
 
@@ -32,6 +34,15 @@ class Client(object):
         """
         return Teams(org, self.http_client)
 
+    def members(self, org, team):
+        """Teams contain a list of users. The Authenticated user should be the owner of the organization.
+
+        Args:
+            org: Name of the organization
+            team: Name of the team
+        """
+        return Members(org, team, self.http_client)
+
     def projects(self, org):
         """An organization can contain any number of projects.
 
@@ -39,6 +50,15 @@ class Client(object):
             org: Name of the organization
         """
         return Projects(org, self.http_client)
+
+    def access(self, org, project):
+        """List of teams who has access to the project. Default team __Owners__ will have access to every project. Authenticated user should be the owner of the organization for the below endpoints.
+
+        Args:
+            org: Name of the organization
+            project: Name of the project
+        """
+        return Access(org, project, self.http_client)
 
     def envs(self, org, project):
         """Every project has a default environment named Production. Each environment has one configuration document which can have many keys and values.
