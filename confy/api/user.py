@@ -7,7 +7,7 @@ class User(object):
         self.client = client
 
     def retrieve(self, options={}):
-        """Get the authenticated user's info.
+        """Get the authenticated user's profile.
 
         '/user' GET
         """

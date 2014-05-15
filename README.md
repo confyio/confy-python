@@ -111,7 +111,7 @@ user = client.user()
 
 ##### Retrieve authenticated user (GET /user)
 
-Get the authenticated user's info.
+Get the authenticated user's profile.
 
 ```python
 response = user.retrieve(options)
@@ -145,6 +145,19 @@ List all organizations the authenticated user is a member of.
 response = orgs.list(options)
 ```
 
+##### Create an organization (POST /orgs)
+
+Create an organization with a name and the email for billing.
+
+The following arguments are required:
+
+ * __name__: Name of the organization
+ * __email__: Billing email of the organization
+
+```python
+response = orgs.create("OpenSourceProject", "admin@osp.com", options)
+```
+
 ##### Retrieve an organization (GET /orgs/:org)
 
 Get an organization the user has access to.
@@ -168,6 +181,256 @@ The following arguments are required:
 
 ```python
 response = orgs.update("bigcompany", "admin@bigcompany.com", options)
+```
+
+### Teams api
+
+Every organization will have a default team named Owners. Owner of the organization will be a default member for every team.
+
+The following arguments are required:
+
+ * __org__: Name of the organization
+
+```python
+teams = client.teams("bigcompany")
+```
+
+##### List Teams (GET /orgs/:org/teams)
+
+List teams of the given organization authenticated user is a member of.
+
+```python
+response = teams.list(options)
+```
+
+##### Create a team (POST /orgs/:org/teams)
+
+Create a team for the given organization. Authenticated user should be the owner of the organization.
+
+The following arguments are required:
+
+ * __name__: Name of the team
+ * __description__: Description of the team
+
+```python
+response = teams.create("Consultants", "Guys who are contractors", options)
+```
+
+##### Retrieve a team (GET /orgs/:org/teams/:team)
+
+Get a team the user is member of.
+
+The following arguments are required:
+
+ * __team__: Name of the team
+
+```python
+response = teams.retrieve("consultants", options)
+```
+
+##### Update a team (PATCH /orgs/:org/teams/:team)
+
+Update a team. Authenticated user should be the owner of the organization.
+
+The following arguments are required:
+
+ * __team__: Name of the team
+ * __description__: Description of the team
+
+```python
+response = teams.update("consultants", "Guys who are contractors", options)
+```
+
+##### Delete a team (DELETE /orgs/:org/teams/:team)
+
+Delete the given team. Cannot delete the default team in the organization. Authenticated user should be the owner of the organization.
+
+The following arguments are required:
+
+ * __team__: Name of the team
+
+```python
+response = teams.destroy("consultants", options)
+```
+
+### Projects api
+
+An organization can contain any number of projects.
+
+The following arguments are required:
+
+ * __org__: Name of the organization
+
+```python
+projects = client.projects("bigcompany")
+```
+
+##### List projects (GET /orgs/:org/projects)
+
+List all the projects of the organization which can be seen by the authenticated user.
+
+```python
+response = projects.list(options)
+```
+
+##### Create a project (POST /orgs/:org/projects)
+
+Create a project for the given organization. Authenticated user should be the owner of the organization.
+
+The following arguments are required:
+
+ * __name__: Name of the project
+ * __description__: Description of the project
+
+```python
+response = projects.create("KnowledgeBase", "Support FAQ & Wiki", options)
+```
+
+##### Retrieve a project (GET /orgs/:org/projects/:project)
+
+Get a project the user has access to.
+
+The following arguments are required:
+
+ * __project__: Name of the project
+
+```python
+response = projects.retrieve("knowledgebase", options)
+```
+
+##### Update a project (PATCH /orgs/:org/projects/:project)
+
+Update a project. Authenticated user should be the owner of the organization.
+
+The following arguments are required:
+
+ * __project__: Name of the project
+ * __description__: Description of the project
+
+```python
+response = projects.update("knowledgebase", "Support FAQ and Wiki", options)
+```
+
+##### Delete a project (DELETE /orgs/:org/projects/:project)
+
+Delete the given project. Cannot delete the default project in the organization. Authenticated user should be the owner of the organization.
+
+The following arguments are required:
+
+ * __project__: Name of the project
+
+```python
+response = projects.destroy("knowledgebase", options)
+```
+
+### Environments api
+
+Every project has a default environment named Production. Each environment has one configuration document which can have many keys and values.
+
+The following arguments are required:
+
+ * __org__: Name of the organization
+ * __project__: Name of the project
+
+```python
+envs = client.envs("bigcompany", "knowledgebase")
+```
+
+##### List all environments (GET /orgs/:org/projects/:project/envs)
+
+List all the environmens of the project which can be seen by the authenticated user.
+
+```python
+response = envs.list(options)
+```
+
+##### Create an environment (POST /orgs/:org/projects/:project/envs)
+
+Create an environment for the given project. Authenticated user should have access to the project.
+
+The following arguments are required:
+
+ * __name__: Name of the environment
+ * __description__: Description of the environment
+
+```python
+response = envs.create("QA", "Quality assurance guys server", options)
+```
+
+##### Retrieve an environment (GET /orgs/:org/projects/:project/envs/:env)
+
+Get an environment of the project the user has access to.
+
+The following arguments are required:
+
+ * __env__: Name of the environment
+
+```python
+response = envs.retrieve("qa", options)
+```
+
+##### Update an environment (PATCH /orgs/:org/projects/:project/envs/:env)
+
+Update an environment. Authenticated user should have access to the project.
+
+The following arguments are required:
+
+ * __env__: Name of the environment
+ * __description__: Description of the environment
+
+```python
+response = envs.update("qa", "Testing server for QA guys", options)
+```
+
+##### Delete an environment (DELETE /orgs/:org/projects/:project/envs/:env)
+
+Delete the given environment of the project. Authenticated user should have access to the project. Cannot delete the default environment.
+
+The following arguments are required:
+
+ * __env__: Name of the environment
+
+```python
+response = envs.destroy("knowledgebase", options)
+```
+
+### configuration api
+
+Any member of the team which has access to the project can retrieve any of it's environment's configuration document or edit it.
+
+The following arguments are required:
+
+ * __org__: Name of the organization
+ * __project__: Name of the project
+ * __env__: Name of the environment
+
+```python
+config = client.config("bigcompany", "knowledgebase", "production")
+```
+
+##### Retrieve an config (GET /orgs/:org/projects/:project/envs/:env/config)
+
+Get an environment config of the project.
+
+```python
+response = config.retrieve(options)
+```
+
+##### Update the configuration (POST /orgs/:org/projects/:project/envs/:env/config)
+
+Update the configuration document for the given environment of the project. We will patch the document recursively.
+
+The following arguments are required:
+
+ * __config__: Configuration to update
+
+```python
+response = config.update({
+    'database': {
+        'port': 6984
+    },
+    'random': "wow"
+}, options)
 ```
 
 ## Contributors

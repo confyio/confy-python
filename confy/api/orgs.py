@@ -17,6 +17,23 @@ class Orgs(object):
 
         return response
 
+    def create(self, name, email, options={}):
+        """Create an organization with a name and the email for billing.
+
+        '/orgs' POST
+
+        Args:
+            name: Name of the organization
+            email: Billing email of the organization
+        """
+        body = options['body'] if 'body' in options else {}
+        body['name'] = name
+        body['email'] = email
+
+        response = self.client.post('/orgs', body, options)
+
+        return response
+
     def retrieve(self, org, options={}):
         """Get an organization the user has access to.
 
