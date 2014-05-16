@@ -21,7 +21,21 @@ Works with [ 2.6 / 2.7 / 3.2 / 3.3 ]
 ```python
 import confy
 
-# Then we instantiate a client (as shown below)
+# Retrieve the config using URL
+config = confy.config('https://user:pass@api.confy.io/orgs/company/project/app/envs/production')
+
+# or using options hash
+config = confy.config({
+  'host': 'https://api.confy.io', 'user': 'user', 'pass': 'pass',
+  'org': 'company', 'project': 'app', 'env': 'production'
+})
+
+# => { 'port': 6000, 'db': { 'pass': 'sun' } }
+
+config['port'] # => 6000
+config['db']['pass'] # => 'sun'
+
+# Or you could instantiate a client to work with other api (as shown below)
 ```
 
 ### Build a client
