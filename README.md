@@ -22,10 +22,10 @@ Works with [ 2.6 / 2.7 / 3.2 / 3.3 ]
 import confy
 
 # Retrieve the config using URL
-config = confy.config('https://user:pass@api.confy.io/orgs/company/project/app/envs/production')
+config = confy.Config.load('https://user:pass@api.confy.io/orgs/company/project/app/envs/production')
 
 # or using options hash
-config = confy.config({
+config = confy.Config.load({
   'host': 'https://api.confy.io', 'user': 'user', 'pass': 'pass',
   'org': 'company', 'project': 'app', 'env': 'production'
 })
@@ -36,6 +36,25 @@ config['port'] # => 6000
 config['db']['pass'] # => 'sun'
 
 # Or you could instantiate a client to work with other api (as shown below)
+```
+
+You can also load the config directly into environment variables by doing as shown below. All the values will be stored in the key formed by concatenizing their keys with underscores.
+
+```python
+# Using URL
+confy.Config.env("https://user:pass@api.confy.io/orgs/company/project/app/envs/production")
+
+# or using options hash
+confy.Config.env({
+  'host': 'https://api.confy.io', 'user': 'user', 'pass': 'pass',
+  'org': 'company', 'project': 'app', 'env': 'production'
+});
+
+# ['port']
+os.environ['PORT'] # => 6000
+
+# ['db']['pass']
+os.environ['DB_PASS'] # => 'sun'
 ```
 
 ### Build a client
