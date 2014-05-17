@@ -18,29 +18,17 @@ Works with [ 2.6 / 2.7 / 3.2 / 3.3 ]
 
 ## Usage
 
+There are two ways of loading the config.
+
+ * You can either load it as a hash object with the same structure into a variable.
+ * Or you can load it directly into `os.environ` with the key formed by concatenizing the path keys with underscores.
+
 ```python
 import confy
 
-# Retrieve the config using URL
-config = confy.Config.load('https://user:pass@api.confy.io/orgs/company/project/app/envs/production')
-
-# or using options hash
-config = confy.Config.load({
-  'host': 'https://api.confy.io', 'user': 'user', 'pass': 'pass',
-  'org': 'company', 'project': 'app', 'env': 'production'
-})
-
+# When the config is
 # => { 'port': 6000, 'db': { 'pass': 'sun' } }
 
-config['port'] # => 6000
-config['db']['pass'] # => 'sun'
-
-# Or you could instantiate a client to work with other api (as shown below)
-```
-
-You can also load the config directly into environment variables by doing as shown below. All the values will be stored in the key formed by concatenizing their keys with underscores.
-
-```python
 # Using URL
 confy.Config.env("https://user:pass@api.confy.io/orgs/company/project/app/envs/production")
 
@@ -55,6 +43,23 @@ os.environ['PORT'] # => 6000
 
 # ['db']['pass']
 os.environ['DB_PASS'] # => 'sun'
+
+```
+
+```python
+# Retrieve the config using URL
+config = confy.Config.load('https://user:pass@api.confy.io/orgs/company/project/app/envs/production')
+
+# or using options hash
+config = confy.Config.load({
+  'host': 'https://api.confy.io', 'user': 'user', 'pass': 'pass',
+  'org': 'company', 'project': 'app', 'env': 'production'
+})
+
+config['port'] # => 6000
+config['db']['pass'] # => 'sun'
+
+# Or you could instantiate a client to work with other api (as shown below)
 ```
 
 ### Build a client
