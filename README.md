@@ -86,7 +86,7 @@ The following options are available while instantiating a client:
 
 ### Response information
 
-__All the callbacks provided to an api call will recieve the response as shown below__
+__All the callbacks provided to an api call will receive the response as shown below__
 
 ```python
 response = client.klass('args').method('args', method_options)
@@ -528,7 +528,7 @@ Get an environment config of the project.
 response = config.retrieve(options)
 ```
 
-##### Update the configuration (POST /orgs/:org/projects/:project/envs/:env/config)
+##### Update the configuration (PATCH /orgs/:org/projects/:project/envs/:env/config)
 
 Update the configuration document for the given environment of the project. We will patch the document recursively.
 

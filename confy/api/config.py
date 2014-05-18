@@ -28,12 +28,12 @@ class Config(object):
     def update(self, body, options={}):
         """Update the configuration document for the given environment of the project. We will patch the document recursively.
 
-        '/orgs/:org/projects/:project/envs/:env/config' POST
+        '/orgs/:org/projects/:project/envs/:env/config' PATCH
 
         Args:
             body: Configuration to update
         """
-        response = self.client.post('/orgs/' + self.org + '/projects/' + self.project + '/envs/' + self.env + '/config', body, options)
+        response = self.client.patch('/orgs/' + self.org + '/projects/' + self.project + '/envs/' + self.env + '/config', body, options)
 
         return response
 
