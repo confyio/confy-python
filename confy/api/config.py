@@ -25,14 +25,17 @@ class Config(object):
 
         return response
 
-    def update(self, body, options={}):
+    def update(self, config, options={}):
         """Update the configuration document for the given environment of the project. We will patch the document recursively.
 
         '/orgs/:org/projects/:project/envs/:env/config' PATCH
 
         Args:
-            body: Configuration to update
+            config: Configuration to update
         """
+        body = options['body'] if 'body' in options else {}
+        body['config'] = config
+
         response = self.client.patch('/orgs/' + self.org + '/projects/' + self.project + '/envs/' + self.env + '/config', body, options)
 
         return response
