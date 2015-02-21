@@ -17,16 +17,14 @@ class User(object):
 
         return response
 
-    def update(self, email, options={}):
-        """Update the authenticated user's profile
+    def update(self, options={}):
+        """Update the authenticated user's profile. Should use basic authentication.
 
         '/user' PATCH
 
         Args:
-            email: Profile email of the user
         """
         body = options['body'] if 'body' in options else {}
-        body['email'] = email
 
         response = self.client.patch('/user', body, options)
 

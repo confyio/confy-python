@@ -4,7 +4,7 @@ class ResponseHandler(object):
 
     @staticmethod
     def get_body(response):
-        typ = response.headers.get('content-type')
+        typ = response.headers.get('content-type', '')
         body = response.text
 
         # Response body is in JSON

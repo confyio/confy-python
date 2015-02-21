@@ -12,8 +12,19 @@ class Members(object):
         self.team = team
         self.client = client
 
+    def list(self, options={}):
+        """List all the members in the given team. Authenticated user should be a member of the team or the owner of the org.
+
+        '/orgs/:org/teams/:team/member' GET
+        """
+        body = options['query'] if 'query' in options else {}
+
+        response = self.client.get('/orgs/' + self.org + '/teams/' + self.team + '/member', body, options)
+
+        return response
+
     def add(self, user, options={}):
-        """Add the user to the given team. The __user__ in the request needs to be a string.
+        """Add the user to the given team. The __user__ in the request needs to be a string and be the username of a valid user.  The Authenticated user should be the owner of the organization.
 
         '/orgs/:org/teams/:team/member' POST
 
@@ -28,7 +39,7 @@ class Members(object):
         return response
 
     def remove(self, user, options={}):
-        """Remove users from the given team. The __user__ in the request needs to be a string. Cannot delete the default member in a team.
+        """Remove users from the given team. The __user__ in the request needs to be a string and be the username of a valid user. Cannot delete the default member in a team.  The Authenticated user should be the owner of the organization.
 
         '/orgs/:org/teams/:team/member' DELETE
 

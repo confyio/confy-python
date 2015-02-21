@@ -27,7 +27,7 @@ class Client(object):
         return Orgs(self.http_client)
 
     def teams(self, org):
-        """Every organization will have a default team named Owners. Owner of the organization will be a default member for every team.
+        """Every organization will have a default team named __Owners__. Owner of the organization will be a default member for every team.
 
         Args:
             org: Name of the organization
@@ -52,7 +52,7 @@ class Client(object):
         return Projects(org, self.http_client)
 
     def access(self, org, project):
-        """List of teams who has access to the project. Default team __Owners__ will have access to every project. Authenticated user should be the owner of the organization for the below endpoints.
+        """List of teams whic have access to the project. Default team __Owners__ will have access to every project. Authenticated user should be the owner of the organization for the below endpoints.
 
         Args:
             org: Name of the organization
@@ -61,7 +61,7 @@ class Client(object):
         return Access(org, project, self.http_client)
 
     def envs(self, org, project):
-        """Every project has a default environment named Production. Each environment has one configuration document which can have many keys and values.
+        """Every project has a default environment named Production. Each environment has __one__ configuration document which can have many keys and values.
 
         Args:
             org: Name of the organization

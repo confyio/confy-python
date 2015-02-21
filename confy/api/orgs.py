@@ -35,7 +35,7 @@ class Orgs(object):
         return response
 
     def retrieve(self, org, options={}):
-        """Get an organization the user has access to.
+        """Get the given organization if the authenticated user is a member.
 
         '/orgs/:org' GET
 
@@ -49,7 +49,7 @@ class Orgs(object):
         return response
 
     def update(self, org, email, options={}):
-        """Update an organization the user is owner of.
+        """Update the given organization if the authenticated user is the owner. __Email__ is the only thing which can be updated.
 
         '/orgs/:org' PATCH
 

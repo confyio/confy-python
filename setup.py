@@ -18,7 +18,10 @@ setup(
         'requests >= 2.1.0'
     ],
     packages=[
-        'confy'
+        'confy',
+        'confy.api',
+        'confy.error',
+        'confy.http_client'
     ],
     classifiers=[
         'Development Status :: 5 - Production/Stable',
