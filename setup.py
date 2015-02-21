@@ -15,7 +15,8 @@ setup(
     url='https://confy.io',
     license='BSD',
     install_requires=[
-        'requests >= 2.1.0'
+        'requests >= 2.1.0',
+        'pycrypto >= 2.6.1'
     ],
     packages=[
         'confy',
