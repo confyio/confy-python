@@ -561,7 +561,7 @@ response = config.update({
 ```
 
 ## Contributors
-Here is a list of [Contributors](https://github.com/asm-products/confy-python/contributors)
+Here is a list of [Contributors](https://github.com/confyio/confy-python/contributors)
 
 ### TODO
 
@@ -569,7 +569,7 @@ Here is a list of [Contributors](https://github.com/asm-products/confy-python/co
 BSD
 
 ## Bug Reports
-Report [here](https://github.com/asm-products/confy-python/issues).
+Report [here](https://github.com/confyio/confy-python/issues).
 
 ## Contact
 Pavan Kumar Sunkara (pavan.sss1991@gmail.com)
