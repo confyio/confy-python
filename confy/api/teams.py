@@ -82,3 +82,17 @@ class Teams(object):
 
         return response
 
+    def projects(self, team, options={}):
+        """Retrieve the list of projects the given team has access to. Authenticated user should be a member of the team.
+
+        '/orgs/:org/teams/:team/projects' GET
+
+        Args:
+            team: Name of the team
+        """
+        body = options['query'] if 'query' in options else {}
+
+        response = self.client.get('/orgs/' + self.org + '/teams/' + team + '/projects', body, options)
+
+        return response
+

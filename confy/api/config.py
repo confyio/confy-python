@@ -15,7 +15,7 @@ class Config(object):
         self.client = client
 
     def retrieve(self, options={}):
-        """Get an environment config of the project.
+        """Get an environment configuration
 
         '/orgs/:org/projects/:project/envs/:env/config' GET
         """
@@ -37,6 +37,17 @@ class Config(object):
         body['config'] = config
 
         response = self.client.patch('/orgs/' + self.org + '/projects/' + self.project + '/envs/' + self.env + '/config', body, options)
+
+        return response
+
+    def versions(self, options={}):
+        """List the last 10 versions of the environment configuration
+
+        '/orgs/:org/projects/:project/envs/:env/versions' GET
+        """
+        body = options['query'] if 'query' in options else {}
+
+        response = self.client.get('/orgs/' + self.org + '/projects/' + self.project + '/envs/' + self.env + '/versions', body, options)
 
         return response
 

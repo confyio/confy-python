@@ -182,19 +182,6 @@ List all organizations the authenticated user is a member of.
 response = orgs.list(options)
 ```
 
-##### Create an organization (POST /orgs)
-
-Create an organization with a name and the email for billing.
-
-The following arguments are required:
-
- * __name__: Name of the organization
- * __email__: Billing email of the organization
-
-```python
-response = orgs.create("Open Source Project", "admin@osp.com", options)
-```
-
 ##### Retrieve an organization (GET /orgs/:org)
 
 Get the given organization if the authenticated user is a member.
@@ -288,6 +275,18 @@ The following arguments are required:
 
 ```python
 response = teams.destroy("consultants", options)
+```
+
+##### List projects a team has access to (GET /orgs/:org/teams/:team/projects)
+
+Retrieve the list of projects the given team has access to. Authenticated user should be a member of the team.
+
+The following arguments are required:
+
+ * __team__: Name of the team
+
+```python
+response = teams.projects("consultants", options)
 ```
 
 ### Members api
@@ -521,7 +520,7 @@ The following arguments are required:
 response = envs.destroy("knowledge-base", options)
 ```
 
-### configuration api
+### Configuration api
 
 Any member of the team which has access to the project can retrieve any of it's environment's configuration document or edit it.
 
@@ -535,9 +534,9 @@ The following arguments are required:
 config = client.config("big-company", "knowledge-base", "production")
 ```
 
-##### Retrieve an config (GET /orgs/:org/projects/:project/envs/:env/config)
+##### Retrieve a config (GET /orgs/:org/projects/:project/envs/:env/config)
 
-Get an environment config of the project.
+Get an environment configuration
 
 ```python
 response = config.retrieve(options)
@@ -553,11 +552,19 @@ The following arguments are required:
 
 ```python
 response = config.update({
+    'random': "wow",
     'database': {
         'port': 6984
-    },
-    'random': "wow"
+    }
 }, options)
+```
+
+##### Retrieve config versions (GET /orgs/:org/projects/:project/envs/:env/versions)
+
+List the last 10 versions of the environment configuration
+
+```python
+response = config.versions(options)
 ```
 
 ## Contributors
