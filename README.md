@@ -30,7 +30,7 @@ import confy
 # => { 'port': 6000, 'db': { 'pass': 'sun' } }
 
 # Using URL
-confy.Config.env("https://user:pass@api.confy.io/orgs/company/project/app/envs/production")
+confy.Config.env('https://user:pass@api.confy.io/orgs/company/project/app/envs/production/config')
 
 # or using options hash
 confy.Config.env({
@@ -48,7 +48,7 @@ os.environ['DB_PASS'] # => 'sun'
 
 ```python
 # Retrieve the config using URL
-config = confy.Config.load('https://user:pass@api.confy.io/orgs/company/project/app/envs/production')
+config = confy.Config.load('https://user:pass@api.confy.io/orgs/company/project/app/envs/production/config')
 
 # or using options hash
 config = confy.Config.load({
