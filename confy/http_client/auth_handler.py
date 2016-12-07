@@ -17,7 +17,7 @@ class AuthHandler(object):
 
     def set(self, request):
         if len(self.auth.keys()) == 0:
-            raise StandardError("Server requires authentication to proceed further. Please check")
+            return request
 
         auth = self.get_auth_type()
         flag = False

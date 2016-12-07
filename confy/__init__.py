@@ -9,8 +9,9 @@ class Config(object):
     def load(cls, url={}):
         if type(url) is str:
             name_regex = '([a-z0-9][a-z0-9-]*[a-z0-9])'
-            path_regex = 'orgs\\/' + name_regex + '\\/projects\\/' + name_regex + '\\/envs\\/' + name_regex
-            url_regex = re.compile('(https?:\\/\\/)(.*):(.*)@(.*)\\/(' + path_regex + '|heroku)\\/config', re.I)
+            token_regex = '([a-f0-9]{40})'
+            path_regex = 'orgs\\/' + name_regex + '(\\/projects\\/' + name_regex + '\\/envs\\/' + name_regex + '\\/config|config\\/' + token_regex + ')'
+            url_regex = re.compile('(https?:\\/\\/)((.*):(.*)@)?(.*)\\/(' + path_regex + '|heroku\\/config)', re.I)
 
             matches = url_regex.match(url)
 
@@ -18,16 +19,32 @@ class Config(object):
                 raise Exception('Invalid url')
 
             url = {
-                'host': matches.group(1) + matches.group(4), 'path': '/' + matches.group(5) + '/config',
-                'user': matches.group(2), 'pass': matches.group(3)
+                'host': matches.group(1) + matches.group(5),
+                'user': matches.group(3), 'pass': matches.group(4),
+                'org': matches.group(7), 'project': matches.group(9), 'env': matches.group(10),
+                'token': matches.group(11),
+                'heroku': (matches.group(6) == 'heroku/config')
             }
 
         if type(url) is not dict:
-            raise Exception('Invalid url')
+            raise Exception('Invalid URL')
 
-        client = Client({
-            'username': url['user'], 'password': url['pass']
-        }, { 'base': url['host'] })
+        if url['user'] and url['pass'] and url['heroku']:
+            url['path'] = '/heroku/config'
+        elif url['token'] and url['org']:
+            url['path'] = '/orgs/' + url['org'] + '/config/' + url['token']
+        elif url['user'] and url['pass'] and url['org'] and url['project'] and url['env']:
+            url['path'] = '/orgs/' + url['org'] + '/projects/' + url['project'] + '/envs/' + url['env']
+        else:
+            raise Exception('Invalid configuration to generate URL')
+
+        auth = {}
+
+        if url['user'] and url['pass']:
+            auth['username'] = url['user']
+            auth['password'] = url['pass']
+
+        client = Client(auth, { 'base': url['host'] })
 
         body = client.http_client.get(url['path']).body
 
