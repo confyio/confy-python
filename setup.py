@@ -8,7 +8,7 @@ except ImportError:
 
 setup(
     name='confyio',
-    version='2.0.0',
+    version='2.1.0',
     description='Official Confy API library client for python',
     author='Pavan Kumar Sunkara',
     author_email='pavan.sss1991@gmail.com',
