@@ -6,17 +6,17 @@ from .client import Client
 class Config(object):
 
     @classmethod
-    def load(cls, url={}):
+    def match(clas, url):
         if type(url) is str:
             name_regex = '([a-z0-9][a-z0-9-]*[a-z0-9])'
             token_regex = '([a-f0-9]{40})'
-            path_regex = 'orgs\\/' + name_regex + '(\\/projects\\/' + name_regex + '\\/envs\\/' + name_regex + '\\/config|config\\/' + token_regex + ')'
+            path_regex = 'orgs\\/' + name_regex + '(\\/projects\\/' + name_regex + '\\/envs\\/' + name_regex + '\\/config|\\/config\\/' + token_regex + ')'
             url_regex = re.compile('(https?:\\/\\/)((.*):(.*)@)?(.*)\\/(' + path_regex + '|heroku\\/config)', re.I)
 
             matches = url_regex.match(url)
 
             if matches is None:
-                raise Exception('Invalid url')
+                raise Exception('Invalid URL')
 
             url = {
                 'host': matches.group(1) + matches.group(5),
@@ -29,14 +29,23 @@ class Config(object):
         if type(url) is not dict:
             raise Exception('Invalid URL')
 
-        if url['user'] and url['pass'] and url['heroku']:
+        def exists(key):
+            return key in url and url[key]
+
+        if exists('host') and exists('user') and exists('pass') and exists('heroku'):
             url['path'] = '/heroku/config'
-        elif url['token'] and url['org']:
+        elif exists('host') and exists('token') and exists('org'):
             url['path'] = '/orgs/' + url['org'] + '/config/' + url['token']
-        elif url['user'] and url['pass'] and url['org'] and url['project'] and url['env']:
-            url['path'] = '/orgs/' + url['org'] + '/projects/' + url['project'] + '/envs/' + url['env']
+        elif exists('host') and exists('user') and exists('pass') and exists('org') and exists('project') and exists('env'):
+            url['path'] = '/orgs/' + url['org'] + '/projects/' + url['project'] + '/envs/' + url['env'] + '/config'
         else:
-            raise Exception('Invalid configuration to generate URL')
+            raise Exception('Invalid URL')
+
+        return url
+
+    @classmethod
+    def load(cls, url={}):
+        url = cls.match(url)
 
         auth = {}
 

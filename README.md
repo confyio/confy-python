@@ -14,7 +14,7 @@ $ pip install confyio
 
 #### Versions
 
-Works with [ 2.6 / 2.7 / 3.2 / 3.3 ]
+Works with [ 2.6 / 2.7 / 3.2 / 3.3 / 3.4 / 3.5 ]
 
 ## Usage
 
@@ -61,7 +61,7 @@ endpoint = {
   'env': 'production', # Name of the stage
 };
 
-endpoint = 'https://user:pass@api.confy.io/orgs/orgname/project/projectname/envs/envname/config';
+endpoint = 'https://user:pass@api.confy.io/orgs/orgname/projects/projectname/envs/envname/config';
 
 # Access Token URl
 endpoint = {
@@ -89,7 +89,7 @@ config['db']['pass'] # => 'sun'
 
 #### Environment Variables
 
-You can load it directly into `process.env` with the key formed by concatenizing the path keys with underscores.
+You can load it directly into `os.environ` with the key formed by concatenizing the path keys with underscores.
 
 ```python
 confy.Config.env(endpoint)
@@ -100,6 +100,8 @@ os.environ['PORT'] # => 6000
 # ['db']['pass']
 os.environ['DB_PASS'] # => 'sun'
 ```
+
+## API Reference
 
 ### Build a client
 

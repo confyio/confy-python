@@ -14,10 +14,7 @@ setup(
     author_email='pavan.sss1991@gmail.com',
     url='https://confy.io',
     license='BSD',
-    install_requires=[
-        'requests >= 2.1.0',
-        'pycrypto >= 2.6.1'
-    ],
+    install_requires=[line for line in open('requirements.txt')],
     packages=[
         'confy',
         'confy.api',
